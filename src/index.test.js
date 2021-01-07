@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import { SearchInputComponent } from '.'
 
-describe('ExampleComponent', () => {
+describe('SearchComponent', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(SearchInputComponent).toBeTruthy()
   })
 })
