@@ -1,7 +1,8 @@
-import React, { useState, useRef, createRef } from 'react'
+import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 
-import { useDebouncedEffect } from './hooks/useDebouncedEffect'
+import { useDelayEffect } from './hooks/useDelayEffect'
+import SearchResults from './components/SearchResults'
 
 import { SearchIcon, LoadingIcon } from './components/icons'
 import {
@@ -9,30 +10,25 @@ import {
   IconContainer,
   Input,
   InputContainer,
-  Label,
-  SearchResults,
-  SearchResultItem
+  Label
 } from './components/styled'
 
 const HbtSearchInput = ({
   label,
   placeholder,
   name,
-  value,
   loading,
   results,
   onChange,
-  onSelected
+  onSelected,
+  itemsHeight,
+  itemsVisible
 }) => {
-  const [inputValue, setInputValue] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [inputValue, setInputValue] = useState('')
   const inputValueRef = useRef(inputValue)
-  const searchResultsElement = createRef()
 
-  const showNumItems = 6
-  const itemsHeight = 60
-
-  useDebouncedEffect(
+  useDelayEffect(
     () => {
       if (
         inputValue &&
@@ -54,21 +50,6 @@ const HbtSearchInput = ({
     setInputValue(value)
   }
 
-  const scrollToSelectedItem = (offset) => {
-    const itemOffset =
-      document.querySelector(`.active`).offsetTop + offset * itemsHeight
-    const list = searchResultsElement.current
-    const listHeight = itemsHeight * showNumItems
-    const isOutUpper = itemOffset < list.scrollTop
-    const isOutLower = itemOffset + itemsHeight > list.scrollTop + listHeight
-
-    if (isOutUpper) {
-      list.scrollTop = itemOffset
-    } else if (isOutLower) {
-      list.scrollTop = itemOffset + itemsHeight - listHeight
-    }
-  }
-
   const keyDownHandle = ({ key }) => {
     const currentItem = results[selectedIndex]
     if (key === 'Enter') {
@@ -76,12 +57,10 @@ const HbtSearchInput = ({
     } else if (key === 'ArrowDown') {
       if (selectedIndex < results.length - 1) {
         setSelectedIndex(selectedIndex + 1)
-        scrollToSelectedItem(1)
       }
     } else if (key === 'ArrowUp') {
       if (selectedIndex > 0) {
         setSelectedIndex(selectedIndex - 1)
-        scrollToSelectedItem(-1)
       }
     } else if (key === 'Escape') {
       setInputValue('')
@@ -92,34 +71,6 @@ const HbtSearchInput = ({
     setInputValue(item.description)
     inputValueRef.current = item.description
     onSelected(item)
-  }
-
-  const renderResults = () => {
-    return results.map(({ id, description }) => {
-      const currentItem = results[selectedIndex]
-      let itemClass = id === currentItem?.id && ' active'
-      if (id === value?.id) itemClass += ' selected'
-
-      const format = (text) => {
-        const reg = new RegExp(`(${inputValue})`, 'gi')
-        const parts = text.split(reg)
-        return (
-          <div>
-            {parts.map((part) => (part.match(reg) ? <b>{part}</b> : part))}
-          </div>
-        )
-      }
-
-      return (
-        <SearchResultItem
-          key={id}
-          className={itemClass}
-          onClick={() => onSelectedItemHandle({ id, description })}
-        >
-          {format(description)}
-        </SearchResultItem>
-      )
-    })
   }
 
   return (
@@ -142,12 +93,13 @@ const HbtSearchInput = ({
       </InputContainer>
       {!loading && results?.length > 0 && (
         <SearchResults
-          ref={searchResultsElement}
+          results={results}
+          searchTerm={inputValue}
+          selectedIndex={selectedIndex}
           itemsHeight={itemsHeight}
-          showNumItems={showNumItems}
-        >
-          {renderResults()}
-        </SearchResults>
+          itemsVisible={itemsVisible}
+          onItemSelected={onSelectedItemHandle}
+        />
       )}
     </Container>
   )
@@ -166,7 +118,9 @@ HbtSearchInput.propTypes = {
       id: PropTypes.number.isRequired,
       description: PropTypes.string.isRequired
     })
-  )
+  ),
+  itemsHeight: PropTypes.number,
+  itemsVisible: PropTypes.number
 }
 
 HbtSearchInput.defaultProps = {
@@ -174,7 +128,9 @@ HbtSearchInput.defaultProps = {
   value: {},
   onChange: () => null,
   onSelected: () => null,
-  results: []
+  results: [],
+  itemsHeight: 60,
+  itemsVisible: 6
 }
 
 export default HbtSearchInput
