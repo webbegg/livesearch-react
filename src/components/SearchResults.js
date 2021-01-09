@@ -10,7 +10,8 @@ const SearchResults = ({
   selectedIndex,
   itemsHeight,
   itemsVisible,
-  onItemSelected
+  onItemSelected,
+  itemRenderer
 }) => {
   const listElement = useRef()
   useListScroll(listElement, itemsHeight, itemsVisible, selectedIndex)
@@ -33,17 +34,19 @@ const SearchResults = ({
       itemsHeight={itemsHeight}
       itemsVisible={itemsVisible}
     >
-      {results.map(({ id, description }) => {
+      {results.map((result) => {
         const currentItem = results[selectedIndex]
-        const itemClass = id === currentItem?.id && 'active'
+        const itemClass = result.id === currentItem?.id && 'active'
 
         return (
           <SearchResultItem
-            key={id}
+            key={result.id}
             className={itemClass}
-            onClick={() => onItemSelected({ id, description })}
+            onClick={() => onItemSelected(result)}
           >
-            {highlightSearch(description)}
+            {itemRenderer
+              ? itemRenderer(result)
+              : highlightSearch(result.description)}
           </SearchResultItem>
         )
       })}

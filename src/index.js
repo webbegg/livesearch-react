@@ -24,7 +24,8 @@ const LiveSearchInput = ({
   onChange,
   onSelected,
   itemsHeight,
-  itemsVisible
+  itemsVisible,
+  itemRenderer
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [inputValue, setInputValue] = useState('')
@@ -101,6 +102,7 @@ const LiveSearchInput = ({
           itemsHeight={itemsHeight}
           itemsVisible={itemsVisible}
           onItemSelected={onSelectedItemHandle}
+          itemRenderer={itemRenderer || null}
         />
       )}
     </Container>
