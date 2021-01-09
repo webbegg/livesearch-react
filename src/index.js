@@ -69,7 +69,7 @@ const LiveSearchInput = ({
   const keyDownHandle = ({ key }) => {
     const currentItem = results[selectedIndex]
     if (key === 'Enter') {
-      if (results?.length) {
+      if (currentItem) {
         onSelectedItemHandle(currentItem)
         setResults([])
       }
@@ -83,6 +83,7 @@ const LiveSearchInput = ({
       }
     } else if (key === 'Escape') {
       setInputValue('')
+      setError('')
       setResults([])
     }
   }
