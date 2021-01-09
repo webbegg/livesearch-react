@@ -13,7 +13,7 @@ import {
   Label
 } from './components/styled'
 
-const HbtSearchInput = ({
+const LiveSearchInput = ({
   label,
   placeholder,
   name,
@@ -105,7 +105,7 @@ const HbtSearchInput = ({
   )
 }
 
-HbtSearchInput.propTypes = {
+LiveSearchInput.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
   placeholder: PropTypes.string,
@@ -123,7 +123,7 @@ HbtSearchInput.propTypes = {
   itemsVisible: PropTypes.number
 }
 
-HbtSearchInput.defaultProps = {
+LiveSearchInput.defaultProps = {
   name: 'searchInput',
   value: {},
   onChange: () => null,
@@ -133,4 +133,4 @@ HbtSearchInput.defaultProps = {
   itemsVisible: 6
 }
 
-export default HbtSearchInput
+export default LiveSearchInput

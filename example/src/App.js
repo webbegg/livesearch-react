@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import HbtSearchInput from 'ui-search-component'
+import LiveSearchInput from 'ui-search-component'
 import remoteService from './remoteService'
 
 import 'ui-search-component/dist/index.css'
@@ -53,7 +53,7 @@ const App = () => {
 
   return (
     <div className='search-container'>
-      <HbtSearchInput
+      <LiveSearchInput
         name='main-search'
         label='Encuentra profesionales de confianza'
         placeholder='Qué necesitas ...'
