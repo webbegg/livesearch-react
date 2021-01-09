@@ -33,6 +33,20 @@ yarn start # or npm start
 
 ## Component Usage
 
+### Props
+
+- getData: Func (required) - Function that returns results, recive search term as parameter.
+- name: String (required) - Name and Id of the html input element
+- label: String - Component label
+- placeholder: String - Input placeholder
+- itemsHeight: Number - default: 42 - Define the result items height
+- itemsVisible: Number - default: 6 - Define the result list number of visible items
+- itemRenderer: React component - Define a custom result list item component
+
+### Events
+
+- onChange: Func - Function that recives the selected option
+
 ## License
 
 MIT © [webbegg](https://github.com/webbegg)
