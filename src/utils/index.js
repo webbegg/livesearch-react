@@ -6,7 +6,7 @@ const highlightSearch = (text, search) => {
   return (
     <div>
       {parts.map((part, i) => (
-        <span key={i}>{part.match(reg) ? <b>{part}</b> : part}</span>
+        <span key={i}>{part.match(reg) ? <strong>{part}</strong> : part}</span>
       ))}
     </div>
   )
