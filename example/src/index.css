@@ -16,7 +16,8 @@ body {
   flex-direction: column;
   margin: 0 auto;
   padding-top: 3rem;
-  width: 460px;
+  max-width: 460px;
+  width: 90vw;
 }
 
 .error {
