@@ -71,8 +71,8 @@ const LiveSearchInput = ({
   }
 
   const onSelectedItemHandle = (item) => {
-    setInputValue(item.description)
-    inputValueRef.current = item.description
+    setInputValue(item.description || '')
+    inputValueRef.current = item.description || ''
     onSelected(item)
   }
 

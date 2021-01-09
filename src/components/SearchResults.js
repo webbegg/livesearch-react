@@ -3,6 +3,7 @@ import { useListScroll } from '../hooks/useScroll'
 
 import { SearchResultsContainer } from './styled/SearchResultsContainer'
 import { SearchResultItem } from './styled/SearchResultsItem'
+import { SearchResultsOverlay } from './styled/SearchResultsOverlay'
 
 const SearchResults = ({
   results,
@@ -29,28 +30,31 @@ const SearchResults = ({
   }
 
   return (
-    <SearchResultsContainer
-      ref={listElement}
-      itemsHeight={itemsHeight}
-      itemsVisible={itemsVisible}
-    >
-      {results.map((result) => {
-        const currentItem = results[selectedIndex]
-        const itemClass = result.id === currentItem?.id && 'active'
+    <React.Fragment>
+      <SearchResultsOverlay onClick={() => onItemSelected({})} />
+      <SearchResultsContainer
+        ref={listElement}
+        itemsHeight={itemsHeight}
+        itemsVisible={itemsVisible}
+      >
+        {results.map((result) => {
+          const currentItem = results[selectedIndex]
+          const itemClass = result.id === currentItem?.id && 'active'
 
-        return (
-          <SearchResultItem
-            key={result.id}
-            className={itemClass}
-            onClick={() => onItemSelected(result)}
-          >
-            {itemRenderer
-              ? itemRenderer(result)
-              : highlightSearch(result.description)}
-          </SearchResultItem>
-        )
-      })}
-    </SearchResultsContainer>
+          return (
+            <SearchResultItem
+              key={result.id}
+              className={itemClass}
+              onClick={() => onItemSelected(result)}
+            >
+              {itemRenderer
+                ? itemRenderer(result)
+                : highlightSearch(result.description)}
+            </SearchResultItem>
+          )
+        })}
+      </SearchResultsContainer>
+    </React.Fragment>
   )
 }
 
