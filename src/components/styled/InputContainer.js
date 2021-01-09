@@ -2,32 +2,35 @@ import styled from 'styled-components'
 
 import { IconContainer } from './IconContainer'
 
+import theme from '../../styles/theme'
+
 export const InputContainer = styled.div`
+  animation: slideDown 0.62s both;
+  animation-timing-function: ease;
   align-items: center;
-  background-color: #ffffff;
-  border: 1px solid #d2d2d2;
+  background-color: ${theme.colors.white};
+  border: ${theme.borders.default};
   border-radius: 4px;
-  color: #404040;
+  color: ${theme.colors.gray.dark};
   cursor: text;
   display: flex;
   flex: 1;
   flex-direction: columns;
   padding: 1px 16px;
   position: relative;
-  transition: 0.23s ease-in-out;
   z-index: 10;
 
   &:hover {
-    background-color: #fafafa;
-    border-color: #9b9b9b;
+    background-color: ${theme.colors.gray.lightest};
+    border-color: ${theme.colors.gray.base};
   }
 
   &:focus-within {
-    border-color: #ff7300;
-    box-shadow: 0px 0px 8px rgba(255, 115, 0, 0.2);
+    ${theme.shadows.default}
+    border-color: ${theme.colors.accent};
 
     ${IconContainer} {
-      color: #ff7300;
+      color: ${theme.colors.accent};
     }
   }
 

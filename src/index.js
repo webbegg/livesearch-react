@@ -13,6 +13,8 @@ import {
   Label
 } from './components/styled'
 
+import './styles/global.css'
+
 const LiveSearchInput = ({
   label,
   placeholder,

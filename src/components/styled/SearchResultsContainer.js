@@ -1,13 +1,16 @@
 import styled from 'styled-components'
 import { SearchResultItem } from './SearchResultsItem'
 
-export const SearchResults = styled.div`
-  background-color: #ffffff;
-  border: 1px solid #d2d2d2;
+import theme from '../../styles/theme'
+
+export const SearchResultsContainer = styled.div`
+  animation: ${theme.animations.fadeIn} 0.92s ease;
+  background-color: ${theme.colors.white};
+  border: ${theme.borders.default};
   border-radius: 0px 0px 4px 4px;
   position: absolute;
-  max-height: ${({ itemsHeight, showNumItems }) =>
-    itemsHeight * showNumItems}px;
+  max-height: ${({ itemsHeight, itemsVisible }) =>
+    itemsHeight * itemsVisible}px;
   top: 78px;
   left: 0;
   right: 0;

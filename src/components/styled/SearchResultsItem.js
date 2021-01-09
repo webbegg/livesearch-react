@@ -1,22 +1,18 @@
 import styled from 'styled-components'
+import theme from '../../styles/theme'
 
 export const SearchResultItem = styled.div`
   align-items: center;
-  border: 1px solid transparent;
   cursor: pointer;
   display: flex;
   padding: 0 16px;
-  transition: 0.2s ease-in-out;
+  transition: ${theme.transitions.default};
 
   &:hover {
-    background-color: #fafafa;
-  }
-
-  &.selected {
-    background-color: #fafafa;
+    background-color: ${theme.colors.gray.lightest};
   }
 
   &.active {
-    background-color: #cccccc;
+    background-color: ${theme.colors.gray.lightest};
   }
 `
