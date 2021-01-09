@@ -7,6 +7,7 @@ import SearchResults from './components/SearchResults'
 import { SearchIcon, LoadingIcon } from './components/icons'
 import {
   Container,
+  ErrorInfo,
   IconContainer,
   Input,
   InputContainer,
@@ -14,37 +15,49 @@ import {
 } from './components/styled'
 
 import './styles/global.css'
+import utils from './utils'
 
 const LiveSearchInput = ({
+  getData,
+  name,
   label,
   placeholder,
-  name,
-  loading,
-  results,
   onChange,
-  onSelected,
   itemsHeight,
   itemsVisible,
   itemRenderer
 }) => {
+  const [results, setResults] = useState([])
+  const [loading, setLoading] = useState()
+  const [error, setError] = useState()
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [inputValue, setInputValue] = useState('')
   const inputValueRef = useRef(inputValue)
 
   useDelayEffect(
-    () => {
+    async () => {
       if (
         inputValue &&
         inputValue !== inputValueRef.current &&
         inputValue.length >= 2
       ) {
+        setLoading(true)
+        setError()
         setSelectedIndex(0)
-        onChange(inputValue)
+        await getData(inputValue)
+          .then((results) => {
+            setLoading(false)
+            setResults(results)
+            if (!results.length) setError('No se encontraron resultados')
+          })
+          .catch((error) => {
+            setError(error)
+          })
       } else {
         onChange('')
       }
     },
-    800,
+    600,
     [inputValue]
   )
 
@@ -56,7 +69,10 @@ const LiveSearchInput = ({
   const keyDownHandle = ({ key }) => {
     const currentItem = results[selectedIndex]
     if (key === 'Enter') {
-      if (results?.length) onSelectedItemHandle(currentItem)
+      if (results?.length) {
+        onSelectedItemHandle(currentItem)
+        setResults([])
+      }
     } else if (key === 'ArrowDown') {
       if (selectedIndex < results.length - 1) {
         setSelectedIndex(selectedIndex + 1)
@@ -67,13 +83,14 @@ const LiveSearchInput = ({
       }
     } else if (key === 'Escape') {
       setInputValue('')
+      setResults([])
     }
   }
 
   const onSelectedItemHandle = (item) => {
     setInputValue(item.description || '')
     inputValueRef.current = item.description || ''
-    onSelected(item)
+    onChange(item)
   }
 
   return (
@@ -105,24 +122,19 @@ const LiveSearchInput = ({
           itemRenderer={itemRenderer || null}
         />
       )}
+      {error && error !== '' && (
+        <ErrorInfo className='error'>{error}</ErrorInfo>
+      )}
     </Container>
   )
 }
 
 LiveSearchInput.propTypes = {
+  getData: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
   placeholder: PropTypes.string,
-  value: PropTypes.object,
   onChange: PropTypes.func,
-  onSelected: PropTypes.func,
-  loading: PropTypes.bool,
-  results: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      description: PropTypes.string.isRequired
-    })
-  ),
   itemsHeight: PropTypes.number,
   itemsVisible: PropTypes.number
 }
@@ -131,10 +143,10 @@ LiveSearchInput.defaultProps = {
   name: 'searchInput',
   value: {},
   onChange: () => null,
-  onSelected: () => null,
-  results: [],
   itemsHeight: 60,
   itemsVisible: 6
 }
+
+LiveSearchInput.utils = utils
 
 export default LiveSearchInput

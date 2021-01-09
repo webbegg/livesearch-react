@@ -1,9 +1,12 @@
 import React, { useRef } from 'react'
 import { useListScroll } from '../hooks/useScroll'
+import utils from '../utils'
 
-import { SearchResultsContainer } from './styled/SearchResultsContainer'
-import { SearchResultItem } from './styled/SearchResultsItem'
-import { SearchResultsOverlay } from './styled/SearchResultsOverlay'
+import {
+  SearchResultsContainer,
+  SearchResultItem,
+  SearchResultsOverlay
+} from './styled'
 
 const SearchResults = ({
   results,
@@ -16,18 +19,6 @@ const SearchResults = ({
 }) => {
   const listElement = useRef()
   useListScroll(listElement, itemsHeight, itemsVisible, selectedIndex)
-
-  const highlightSearch = (text) => {
-    const reg = new RegExp(`(${searchTerm})`, 'gi')
-    const parts = text.split(reg)
-    return (
-      <div>
-        {parts.map((part, i) => (
-          <span key={i}>{part.match(reg) ? <b>{part}</b> : part}</span>
-        ))}
-      </div>
-    )
-  }
 
   return (
     <React.Fragment>
@@ -49,7 +40,7 @@ const SearchResults = ({
             >
               {itemRenderer
                 ? itemRenderer(result)
-                : highlightSearch(result.description)}
+                : utils.highlightSearch(result.description, searchTerm)}
             </SearchResultItem>
           )
         })}

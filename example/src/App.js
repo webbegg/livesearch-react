@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 
-import LiveSearchInput from 'ui-search-component'
+import LiveSearchInput, { utils } from 'ui-search-component'
 import remoteService from './remoteService'
 
 import 'ui-search-component/dist/index.css'
 
 const CustomItemRenderer = (props) => {
-  console.log(props)
   return (
     <div
       style={{
@@ -35,21 +34,14 @@ const CustomItemRenderer = (props) => {
 }
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [searchResults, setSearchResults] = useState([])
-  const [selectedItem, setSelectedItem] = useState()
-  const [error, setError] = useState()
-
   const searchApi = async (searchTerm) => {
-    setError('')
+    searchTerm = searchTerm?.toLowerCase().trim()
 
-    if (!searchTerm || searchTerm.trim() === '') {
-      setSearchResults([])
-      return
+    if (searchTerm?.trim() === '') {
+      return []
     }
 
     try {
-      setIsLoading(true)
       const { results, error } = await remoteService.getRemoteCharacters(
         searchTerm
       )
@@ -59,25 +51,17 @@ const App = () => {
           description: item.name,
           ...item
         }))
-        setSearchResults(normalized)
+        return normalized
       } else if (error) {
         throw error
       }
     } catch (error) {
-      setError(error)
-      setSearchResults([])
-    } finally {
-      setIsLoading(false)
+      return []
     }
   }
 
-  const searchChangeHandle = (searchTerm) => {
-    searchApi(String(searchTerm).toLowerCase().trim())
-  }
-
-  const selectedItemHandle = (item) => {
-    setSelectedItem(item)
-    setSearchResults([])
+  const searchChangeHandle = (item) => {
+    console.log(item)
   }
 
   return (
@@ -87,34 +71,26 @@ const App = () => {
         style={{ position: 'relative', zIndex: 10 }}
       >
         <LiveSearchInput
+          getData={searchApi}
           name='main-search'
           label='Encuentra profesionales de confianza'
           placeholder='Qué necesitas ...'
-          results={searchResults}
-          loading={isLoading}
-          value={selectedItem}
           onChange={searchChangeHandle}
-          onSelected={selectedItemHandle}
-          itemsHeight={60}
         />
       </div>
       <div
         className='search-container'
-        style={{ position: 'relative', zIndex: 12 }}
+        style={{ position: 'relative', zIndex: 9 }}
       >
         <LiveSearchInput
+          getData={searchApi}
           name='main-search'
-          label='Encuentra profesionales de confianza'
+          label='Encuentra profesionales de confianza (ItemRenderer)'
           placeholder='Qué necesitas ...'
-          results={searchResults}
-          loading={isLoading}
-          value={selectedItem}
           onChange={searchChangeHandle}
-          onSelected={selectedItemHandle}
           itemRenderer={CustomItemRenderer}
           itemsHeight={60}
         />
-        {error && error !== '' && <span className='error'>{error}</span>}
       </div>
     </div>
   )
