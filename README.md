@@ -1,29 +1,37 @@
-# ui-search-component
+# LiveSearch React
 
-> Search input
+## Instructions
 
-[![NPM](https://img.shields.io/npm/v/ui-search-component.svg)](https://www.npmjs.com/package/ui-search-component) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-
-## Install
+### Download repository
 
 ```bash
-npm install --save ui-search-component
+git clone https://github.com/webbegg/livesearch-react
 ```
 
-## Usage
+### Install dependencies
 
-```jsx
-import React, { Component } from 'react'
-
-import MyComponent from 'ui-search-component'
-import 'ui-search-component/dist/index.css'
-
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
+```bash
+cd livesearch-react
+yarn # or npm install
 ```
+
+### Run in dev mode
+
+```bash
+yarn start # or npm start
+```
+
+## Run App with example
+
+```bash
+cd livesearch-react
+yarn # or npm install
+yarn build # or npm run build
+cd example
+yarn start # or npm start
+```
+
+## Component Usage
 
 ## License
 
