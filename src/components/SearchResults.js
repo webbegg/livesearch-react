@@ -17,7 +17,11 @@ const SearchResults = ({
     const reg = new RegExp(`(${searchTerm})`, 'gi')
     const parts = text.split(reg)
     return (
-      <div>{parts.map((part) => (part.match(reg) ? <b>{part}</b> : part))}</div>
+      <div>
+        {parts.map((part, i) => (
+          <span key={i}>{part.match(reg) ? <b>{part}</b> : part}</span>
+        ))}
+      </div>
     )
   }
 
