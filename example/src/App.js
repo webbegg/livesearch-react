@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-import LiveSearchInput, { utils } from 'ui-search-component'
+import LiveSearchInput from 'ui-search-component'
 import remoteService from './remoteService'
 
 import 'ui-search-component/dist/index.css'
