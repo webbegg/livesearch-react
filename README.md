@@ -33,6 +33,18 @@ yarn start # or npm start
 
 ## Component Usage
 
+## JSX
+
+```js
+<LiveSearchInput
+  name='main-search'
+  label='Encuentra profesionales de confianza'
+  placeholder='Qué necesitas ...'
+  getData={searchApi}
+  onChange={searchChangeHandle}
+/>
+```
+
 ### Props
 
 - getData: Func (required) - Function that returns results, recive search term as parameter.
